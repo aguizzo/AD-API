@@ -1,0 +1,133 @@
+openapi: 3.0.3
+info:
+  title: API pública
+  version: "1.0"
+  description: Practica exploratoria de AD
+  contact:
+    email: andres.leandro.guizzo@estudiantat.upc.edu
+  license:
+    name: Glassfish 5.1.0
+    url: https://javaee.github.io/glassfish/LICENSE
+servers:
+  - url: http://localhost:8080/RESTService/resources
+tags:
+  - name: user
+    description: Operaciones sobre usuarios
+  - name: image
+    description: Operaciones sobre imágenes
+
+paths:
+  /user/register:
+    post:
+      tags:
+        - user
+      summary: Registra un nuevo usuario
+      description: Registra un nuevo usuario con el nombre de usuario y contraseña indicados
+      operationId: userRegister
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#components/schemas/User"
+        required: true
+      responses:
+        default:
+          description: Usuario registrado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/User"
+        "201":
+          description: Usuario registrado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/User"
+  
+
+  /image/{Id}:
+    get:
+      tags:
+        - image
+      summary: Busca una imagen por ID
+      description: Devuelve los datos de la imagen con el ID indicado
+      operationId: searchImageById
+      parameters:
+        - name: Id
+          in: path
+          description: ID de la imagen
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Imagen encontrada con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'          
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Image not found
+
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Nombre del usuario
+          example: "Andres"
+        password:
+          type: string
+          description: Contraseña del usuario
+          example: "12345"
+    Image:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Identificador de una imagen
+          example: 2
+        title:
+          type: string
+          description: Título de la imagen
+          example: Gato
+        description:
+          type: string
+          description: Descripción de la imagen
+          example: Imagen de un gato pequeño
+        keywords:
+          type: string
+          description: Palabras que sirven para clasificar la imagen
+          example: animal gato
+        author:
+          type: string
+          description: Nombre del autor de la imagen
+          example: Juan
+        uploader:
+          type: string
+          description: Nombre del usuario que ha subido la imagen
+          example: Andres
+        captureDate:
+          type: string
+          format: date-time
+          description: Fecha de captura de la imagen
+          example: 2022-11-10
+        storageDate:
+          type: string
+          format: date-time
+          description: Fecha de subida de la imagen
+          example: 2022-11-26
+        fileName:
+          type: string
+          description: Nombre del fichero de la imagen
+          example: gato.jpg       
+
+
+
