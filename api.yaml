@@ -108,15 +108,39 @@ paths:
       operationId: listImages
       responses:
         '200':
-          description: Imágnes encontradas con éxito
+          description: Imágenes encontradas con éxito
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#components/schemas/Image'
-  
-  
+  /image/getImage/{Id}:
+    get:
+      tags:
+        - image
+      summary: Descarga una imagen
+      description: Devuelve el fichero correspondiente a la imagen con el ID indicado
+      operationId: downloadImage
+      parameters:
+        - name: Id
+          in: path
+          description: ID de la imagen
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Imagen descargada con éxito
+          content:
+            image/*:
+               schema:
+                  type: string
+                  format: binary
+        '404':
+          description: La imagen no existe
+
 
 
 
