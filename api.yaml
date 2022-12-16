@@ -86,7 +86,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: "#components/schemas/ImageModify"
+              $ref: "#components/schemas/ImageModifyForm"
         required: true
       responses:
         '200':
@@ -140,7 +140,23 @@ paths:
                   format: binary
         '404':
           description: La imagen no existe
-
+  /image/upload:
+    post:
+      tags:
+        - image
+      summary: Subida de una imagen
+      description: Devuelve el fichero correspondiente a la imagen con el ID indicado
+      operationId: uploadImage
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#components/schemas/ImageMultipartForm"
+      responses:
+        '200':
+          description: Imagen registrada con éxito
+        '404':
+          description: La imagen no existe
 
 
 
@@ -199,7 +215,7 @@ components:
           type: string
           description: Nombre del fichero de la imagen
           example: gato.jpg
-    ImageModify:
+    ImageModifyForm:
       type: object
       properties:
         title:
@@ -227,6 +243,41 @@ components:
           format: date
           description: Fecha de captura de la imagen, formato YYYY-MM-DD
           example: "2022-11-10"
+    ImageMultipartForm:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Título de la imagen
+          example: Gato
+        description:
+          type: string
+          description: Descripción de la imagen
+          example: Imagen de un gato pequeño
+        keywords:
+          type: string
+          description: Palabras que sirven para clasificar la imagen
+          example: animal gato
+        author:
+          type: string
+          description: Nombre del autor de la imagen
+          example: Juan
+        uploader:
+          type: string
+          description: Nombre del usuario que ha subido la imagen
+          example: Andres
+        capture:
+          type: string
+          format: date
+          description: Fecha de captura de la imagen, formato YYYY-MM-DD
+          example: "2022-11-10"
+        filename:
+          type: string
+          description: Nombre del fichero de la imagen
+          example: gato.jpg
+        file:
+          type: string
+          format: binary
 
 
 
