@@ -41,9 +41,31 @@ paths:
           description: Usuario registrado con éxito
         "409":
           description: Ya existe un usuario con ese nombre
-        
-  
-
+  /user/login:
+    post:
+      tags:
+        - user
+      summary: Haz login
+      description: Inicia sesión con el nombre de usuario y contraseña indicados
+      operationId: userLogin
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/User"
+        required: true
+      responses:
+        default:
+          description: Inicio sesión éxitoso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "201":
+          description: Usuario registrado con éxito
+        "409":
+          description: El nombre de usuario o la contraseña son incorrectos.
+       
   /image/{Id}:
     get:
       tags:
@@ -182,8 +204,142 @@ paths:
                 $ref: '#/components/schemas/Image'
         '404':
           description: La imagen no existe
-
-
+  /image/searchTitle/{title}:
+    get:
+      tags:
+        - image
+      summary: Busca una imagen por título
+      description: Devuelve los datos de las imágenes que contiene los carácteres indicados en el título
+      operationId: searchByTitle
+      parameters:
+        - name: title
+          in: path
+          description: Fecha de la imagen
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Imágenes encontradas con éxito 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Image'      
+  /image/searchCreationDate/{date}:
+    get:
+      tags:
+        - image
+      summary: Busca una imagen por fecha de almacenamiento
+      description: Devuelve los datos de las imágenes que tienen una fecha igual o superior a la indicada
+      operationId: searchByStorageDate 
+      parameters:
+        - name: date
+          in: path
+          description: Fecha de la imagen, el formato es el siguiente yyyy-mm-dd
+          required: true
+          schema:
+            type: string
+            example: "2022-11-26"
+      responses:
+        '200':
+          description: Encontradas con éxito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Image'
+  /image/searchAuthor/{author}:
+    get:
+      tags:
+        - image
+      summary: Busca una imagen por autor 
+      description: Devuelve los datos de las imágenes que contiene el string indicado en el autor
+      operationId: searchByAuthor 
+      parameters:
+        - name: author
+          in: path
+          description: Autor de la imagen
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Imágenes encontradas con éxito 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Image'      
+  /image/searchKeywords/{keywords}:
+    get:
+      tags:
+        - image
+      summary: Busca una imagen por las palabras clave 
+      description: Devuelve los datos de las imágenes que contienen las palabras claves indicadas
+      operationId: searchByKeywords 
+      parameters:
+        - name: keywords
+          in: path
+          description: Palabras clave de la imagen
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Imágenes encontradas con éxito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Image'
+  /image/combinedSearch:
+    get:
+      tags:
+        - image
+      summary: Busca imágenes por título, palabras clave, autor y fecha de captura 
+      description: Devuelve los datos de las imágenes según la búsqueda combinada realizada
+      operationId: searchImages 
+      parameters:
+        - name: title
+          in: query
+          description: Fecha de la imagen
+          schema:
+            type: string
+          allowEmptyValue: true
+        - name: keywords
+          in: query
+          description: Palabras clave de la imagen
+          schema:
+            type: string
+          allowEmptyValue: true
+        - name: author
+          in: query
+          description: Autor de la imagen
+          schema:
+            type: string
+          allowEmptyValue: true
+        - name: captureDate
+          in: query
+          description: Fecha de captura de la imagen, formato yyyy-mm-dd
+          schema:
+            type: string
+            example: "2022-11-26"
+          allowEmptyValue: true
+      responses:
+        '200':
+          description: Imágenes encontradas con éxito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Image'      
+  
 
 components:
   schemas:
