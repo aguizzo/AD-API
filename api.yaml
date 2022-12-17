@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: API pública
   version: "1.0"
-  description: Practica exploratoria de AD
+  description: Practica exploratoria de AD, desarrollada por Andrés Leandro y Moisés Balcells
   contact:
     email: andres.leandro.guizzo@estudiantat.upc.edu
   license:
@@ -15,7 +15,7 @@ tags:
     description: Operaciones sobre usuarios
   - name: image
     description: Operaciones sobre imágenes
-
+  
 paths:
   /user/register:
     post:
@@ -28,7 +28,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: "#components/schemas/User"
+              $ref: "#/components/schemas/User"
         required: true
       responses:
         default:
@@ -36,13 +36,37 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#components/schemas/User"
+                $ref: "#/components/schemas/User"
         "201":
           description: Usuario registrado con éxito
         "409":
           description: Ya existe un usuario con ese nombre
         
-  
+  /user/login:
+    post:
+      tags:
+        - user
+      summary: Haz login
+      description: Inicia sesión con el nombre de usuario y contraseña indicados
+      operationId: userLogin
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/User"
+        required: true
+      responses:
+        default:
+          description: Inicio sesión éxitoso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "201":
+          description: Usuario registrado con éxito
+        "409":
+          description: El nombre de usuario o la contraseña son incorrectos.
+
 
   /image/{Id}:
     get:
@@ -86,7 +110,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: "#components/schemas/ImageModify"
+              $ref: "#/components/schemas/ImageModify"
         required: true
       responses:
         '200':
@@ -99,6 +123,7 @@ paths:
           description: No puedes modificar imáganes de otros usuarios
         '404':
           description: La imagen no existe
+          
   /image/list:
     get:
       tags:
@@ -114,9 +139,162 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#components/schemas/Image'
+                  $ref: '#/components/schemas/Image'
   
+
+  /image/delete:
+    post:
+      tags:
+        - image
+      summary: Elimina una imágen indicando el ID y el uploader
+      description: Elimina una imagen
+      operationId: deleteImage
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/ImageDelete"
+        required: true
+      responses:
+        default:
+          description: Imagen eliminada con éxito
+        "201":
+          description: Imagen eliminada con éxito
+        "409":
+          description: No se ha podido borrar la imagen en la base de datos
+        "404":
+          description: No se ha podido eliminar el archivo
   
+
+/image/searchTitle/{title}:
+    get:
+      tags:
+        - image
+      summary: Busca una imagen por título
+      description: Devuelve los datos de las imágenes que contiene el string indicado en el título indicado
+      operationId: searchByTitle
+      parameters:
+        - name: title
+          in: path
+          description: Fecha de la imagen
+          required: true
+          schema:
+            type: String
+      responses:
+        '200':
+          description: Encontradas con éxito Todas las images que fecha igual o superior a la indicada
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Image'      
+        '404':
+          description: La imagen no existe
+
+
+/image/searchCreationDate/{date}:
+    get:
+      tags:
+        - image
+      summary: Busca una imagen por fecha de almacenamiento
+      description: Devuelve los datos de las imágenes que tiene fecha igual o superior a la indicada
+      operationId: searchByStorageDate 
+      parameters:
+        - name: Date
+          in: path
+          description: Fecha de la imagen, el formato es el siguiente yyyy-mm-dd
+          required: true
+          schema:
+            type: String
+      responses:
+        '200':
+          description: Encontradas con éxito Todas las images que contienen el título indicado
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Image'      
+        '404':
+          description: La imagen no existe
+
+/image/searchAuthor/{author}:
+    get:
+      tags:
+        - image
+      summary: Busca una imagen por autor 
+      description: Devuelve los datos de las imágenes que contiene el string indicado en el autor
+      operationId: searchByAuthor 
+      parameters:
+        - name: Autor
+          in: path
+          description: Autor de la imagen
+          required: true
+          schema:
+            type: String
+      responses:
+        '200':
+          description: Encontradas con éxito Todas las images que contienen el título indicado
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Image'      
+        '404':
+          description: La imagen no existe
+
+/image/searchKeywords/{keywords}:
+    get:
+      tags:
+        - image
+      summary: Busca una imagen por las palabras clave 
+      description: Devuelve los datos de las imágenes que contienen las palabras claves indicadas
+      operationId: searchByKeywords 
+      parameters:
+        - name: Keywords
+          in: path
+          description: Palabras clave de la imagen
+          required: true
+          schema:
+            type: String
+      responses:
+        '200':
+          description: Encontradas con éxito Todas las images que contienen el título indicado
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Image'      
+        '404':
+          description: La imagen no existe
+
+
+/image/combinedSearch:
+  get:
+      tags:
+        - image
+      summary: Busca una imagen por título, palabras clave, autor y fecha de captura 
+      description: Devuelve los datos de las imágenes según la búsqueda combinada realizada
+      operationId: searchImages 
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/ImageSearch"
+      responses:
+        '200':
+          description: Encontradas con éxito Todas las images que contienen el título indicado
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Image'      
+        '404':
+          description: La imagen no existe
 
 
 
@@ -133,6 +311,7 @@ components:
           type: string
           description: Contraseña del usuario
           example: "12345"
+          
     Image:
       type: object
       properties:
@@ -175,6 +354,7 @@ components:
           type: string
           description: Nombre del fichero de la imagen
           example: gato.jpg
+          
     ImageModify:
       type: object
       properties:
@@ -203,6 +383,38 @@ components:
           format: date
           description: Fecha de captura de la imagen, formato YYYY-MM-DD
           example: "2022-11-10"
-
+          
+    ImageDelete:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID de la imagen
+          example: 1
+        uploader:
+          type: string
+          description: Nombre del usuario que ha subido la imagen
+          example: Andres
+          
+    ImageSearch:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Título de la imagen
+          example: Gato
+        keywords:
+          type: string
+          description: Palabras que sirven para clasificar la imagen
+          example: animal gato
+        author:
+          type: string
+          description: Nombre del autor de la imagen
+          example: Juan
+        captureDate:
+          type: string
+          format: date
+          description: Fecha de captura de la imagen, formato YYYY-MM-DD
+          example: "2022-11-10"
 
 
