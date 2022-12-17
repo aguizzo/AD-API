@@ -99,6 +99,27 @@ paths:
           description: No puedes modificar imáganes de otros usuarios
         '404':
           description: La imagen no existe
+    delete:
+      tags:
+      - image
+      summary: Elimina una imagen
+      description: Elimina una imágen indicando el ID
+      operationId: imageDelete
+      parameters:
+        - name: Id
+          in: path
+          description: ID de la imagen
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Imagen eliminada con éxito
+        '404':
+          description: La imagen no existe
+        '409': 
+          description: No puedes eliminar imáganes de otros usuarios
   /image/list:
     get:
       tags:
@@ -115,7 +136,7 @@ paths:
                 type: array
                 items:
                   $ref: '#components/schemas/Image'
-  /image/getImage/{Id}:
+  /image/downloadImage/{Id}:
     get:
       tags:
         - image
@@ -153,8 +174,12 @@ paths:
             schema:
               $ref: "#components/schemas/ImageMultipartForm"
       responses:
-        '200':
+        '201':
           description: Imagen registrada con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
         '404':
           description: La imagen no existe
 
