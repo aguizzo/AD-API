@@ -40,7 +40,7 @@ paths:
     post:
       tags:
         - user
-      summary: Haz login
+      summary: Inicia sesión
       description: Inicia sesión con el nombre de usuario y contraseña indicados
       operationId: userLogin
       requestBody:
