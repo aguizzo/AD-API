@@ -187,7 +187,7 @@ paths:
       tags:
         - image
       summary: Subida de una imagen
-      description: Devuelve el fichero correspondiente a la imagen con el ID indicado
+      description: Registra una imagen con los datos indicados y el fichero seleccionado
       operationId: uploadImage
       requestBody:
         content:
