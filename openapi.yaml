@@ -58,7 +58,7 @@ paths:
                 $ref: "#/components/schemas/User"
         "201":
           description: Usuario registrado con éxito
-        "404":
+        "400":
           description: El nombre de usuario o la contraseña son incorrectos.
        
   /image/{Id}:
