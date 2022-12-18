@@ -201,8 +201,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Image'
-        '404':
-          description: La imagen no existe
+        '400':
+          description: Algunos de los campos es incorrecto
       security:
         - api_key: []
   /image/searchTitle/{title}:
