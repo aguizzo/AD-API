@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: API pública
   version: "1.0"
-  description: Practica exploratoria de AD
+  description: Practica exploratoria de AD, desarrollada por Andrés Leandro y Moisés Balcells
   contact:
     email: andres.leandro.guizzo@estudiantat.upc.edu
   license:
@@ -28,17 +28,15 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: "#components/schemas/User"
+              $ref: "#components/schemas/UserForm"
         required: true
       responses:
-        default:
+        "201":
           description: Usuario registrado con éxito
           content:
             application/json:
               schema:
                 $ref: "#components/schemas/User"
-        "201":
-          description: Usuario registrado con éxito
         "409":
           description: Ya existe un usuario con ese nombre
   /user/login:
@@ -52,7 +50,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: "#/components/schemas/User"
+              $ref: "#/components/schemas/UserForm"
         required: true
       responses:
         default:
@@ -63,7 +61,7 @@ paths:
                 $ref: "#/components/schemas/User"
         "201":
           description: Usuario registrado con éxito
-        "409":
+        "404":
           description: El nombre de usuario o la contraseña son incorrectos.
        
   /image/{Id}:
@@ -121,6 +119,8 @@ paths:
           description: No puedes modificar imáganes de otros usuarios
         '404':
           description: La imagen no existe
+      security:
+        - api_key: []
     delete:
       tags:
       - image
@@ -142,6 +142,8 @@ paths:
           description: La imagen no existe
         '409': 
           description: No puedes eliminar imáganes de otros usuarios
+      security:
+        - api_key: []
   /image/list:
     get:
       tags:
@@ -204,6 +206,8 @@ paths:
                 $ref: '#/components/schemas/Image'
         '404':
           description: La imagen no existe
+      security:
+        - api_key: []
   /image/searchTitle/{title}:
     get:
       tags:
@@ -354,6 +358,22 @@ components:
           type: string
           description: Contraseña del usuario
           example: "12345"
+        token:
+          type: string
+          description: token de autenticación
+          example: 5bad105cc0d831c4f923d6c60c7fe0dd
+    UserForm:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Nombre del usuario
+          example: "Andres"
+        password:
+          type: string
+          format: password
+          description: Contraseña del usuario
+          example: "12345"
     Image:
       type: object
       properties:
@@ -459,6 +479,9 @@ components:
         file:
           type: string
           format: binary
-
-
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
 
