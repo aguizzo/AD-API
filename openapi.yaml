@@ -25,7 +25,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: "#components/schemas/UserForm"
+              $ref: "#/components/schemas/UserForm"
         required: true
       responses:
         "201":
@@ -33,7 +33,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#components/schemas/User"
+                $ref: "#/components/schemas/User"
         "409":
           description: Ya existe un usuario con ese nombre
   /user/login:
@@ -103,7 +103,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: "#components/schemas/ImageModifyForm"
+              $ref: "#/components/schemas/ImageModifyForm"
         required: true
       responses:
         '200':
@@ -156,7 +156,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#components/schemas/Image'
+                  $ref: '#/components/schemas/Image'
   /image/downloadImage/{Id}:
     get:
       tags:
@@ -193,7 +193,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: "#components/schemas/ImageMultipartForm"
+              $ref: "#/components/schemas/ImageMultipartForm"
       responses:
         '201':
           description: Imagen registrada con éxito
