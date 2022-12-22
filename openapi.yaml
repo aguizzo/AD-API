@@ -111,7 +111,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Image'   
+                $ref: '#/components/schemas/Image'
+        '400':
+          description: Algunos de los campos es incorrecto 
+        '401':
+          description: Tienes que proveer una api-key
         '403':
           description: No puedes modificar imáganes de otros usuarios
         '404':
@@ -135,6 +139,8 @@ paths:
       responses:
         '200':
           description: Imagen eliminada con éxito
+        '401':
+          description: Tienes que proveer una api-key
         '404':
           description: La imagen no existe
         '409': 
@@ -203,6 +209,8 @@ paths:
                 $ref: '#/components/schemas/Image'
         '400':
           description: Algunos de los campos es incorrecto
+        '401':
+          description: Tienes que proveer una api-key
       security:
         - api_key: []
   /image/searchTitle/{title}:
