@@ -440,10 +440,6 @@ components:
           type: string
           description: Nombre del autor de la imagen
           example: Juan
-        uploader:
-          type: string
-          description: Nombre del usuario que ha subido la imagen
-          example: Andres
         captureDate:
           type: string
           format: date
