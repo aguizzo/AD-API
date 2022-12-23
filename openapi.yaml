@@ -160,9 +160,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Image'
+                $ref: '#/components/schemas/ImageArray'
   /image/downloadImage/{Id}:
     get:
       tags:
@@ -211,6 +209,8 @@ paths:
           description: Algunos de los campos es incorrecto
         '401':
           description: Tienes que proveer una api-key
+        '403':
+          description: La api-key no es correcta
       security:
         - api_key: []
   /image/searchTitle/{title}:
@@ -233,9 +233,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Image'      
+                $ref: '#/components/schemas/ImageArray'     
   /image/searchCreationDate/{date}:
     get:
       tags:
@@ -257,9 +255,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Image'
+                $ref: '#/components/schemas/ImageArray'
   /image/searchAuthor/{author}:
     get:
       tags:
@@ -280,9 +276,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Image'      
+                $ref: '#/components/schemas/ImageArray'     
   /image/searchKeywords/{keywords}:
     get:
       tags:
@@ -303,9 +297,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Image'
+                $ref: '#/components/schemas/ImageArray'
   /image/combinedSearch:
     get:
       tags:
@@ -345,10 +337,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Image'      
-  
+                $ref: '#/components/schemas/ImageArray'     
 
 components:
   schemas:
@@ -421,6 +410,10 @@ components:
           type: string
           description: Nombre del fichero de la imagen
           example: gato.jpg
+    ImageArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/Image'      
     ImageModifyForm:
       type: object
       properties:
@@ -464,10 +457,6 @@ components:
           type: string
           description: Nombre del autor de la imagen
           example: Juan
-        uploader:
-          type: string
-          description: Nombre del usuario que ha subido la imagen
-          example: Andres
         capture:
           type: string
           format: date
